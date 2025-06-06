@@ -1,0 +1,63 @@
+32) A) Intersection of two arrays in log n time complexity
+
+import java.util.Arrays;
+
+public class Intersection {
+    public static int[] intersection(int[] arr1, int[] arr2) {
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        int[] result = new int[Math.min(arr1.length, arr2.length)];
+        while (i < arr1.length && j < arr2.length) {
+            if (arr1[i] < arr2[j]) {
+                i++;
+            } else if (arr1[i] > arr2[j]) {
+                j++;
+            } else {
+                result[k++] = arr1[i];
+                i++;
+                j++;
+            }
+        }
+        return Arrays.copyOfRange(result, 0, k);
+    }
+
+    public static void main(String[] args) {
+        int[] arr1 = {1, 2, 3, 4, 5};
+        int[] arr2 = {4, 5, 6, 7, 8};
+        int[] result = intersection(arr1, arr2);
+        System.out.println("Intersection: " + Arrays.toString(result));
+    }
+}
+
+
+B) Find a string is palindrome or not using stack and queue
+
+import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
+
+public class Palindrome {
+    public static boolean isPalindrome(String str) {
+        Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
+        for (char c : str.toCharArray()) {
+            stack.push(c);
+            queue.add(c);
+        }
+        while (!stack.isEmpty()) {
+            if (stack.pop() != queue.poll()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String str = "madam";
+        System.out.println("Is palindrome: " + isPalindrome(str));
+    }
+}
+

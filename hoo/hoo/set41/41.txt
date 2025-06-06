@@ -1,0 +1,206 @@
+41
+
+import java.util.Scanner;
+
+public class BestDayToSellStocks {
+
+    // Function to find the best day to buy and sell stocks
+    public static void findBestDayToSell(int[] prices) {
+        int n = prices.length;
+        
+        // If there's less than two days, no profit can be made
+        if (n < 2) {
+            System.out.println("Not enough data to make a trade.");
+            return;
+        }
+        
+        // Initialize variables
+        int minPrice = prices[0];
+        int maxProfit = 0;
+        int buyDay = 0;
+        int sellDay = 0;
+
+        // Loop through the stock prices to calculate the maximum profit
+        for (int i = 1; i < n; i++) {
+            // Calculate potential profit if selling on day i
+            int profit = prices[i] - minPrice;
+            
+            // Update maxProfit if the profit is greater
+            if (profit > maxProfit) {
+                maxProfit = profit;
+                sellDay = i;
+                buyDay = findBuyDay(prices, minPrice);
+            }
+
+            // Update the minimum price if we find a new lower price
+            if (prices[i] < minPrice) {
+                minPrice = prices[i];
+            }
+        }
+
+        if (maxProfit > 0) {
+            System.out.println("Buy on day " + (buyDay + 1) + " at price " + prices[buyDay]);
+            System.out.println("Sell on day " + (sellDay + 1) + " at price " + prices[sellDay]);
+            System.out.println("Maximum Profit: " + maxProfit);
+        } else {
+            System.out.println("No profit can be made.");
+        }
+    }
+
+    // Function to find the buy day based on the minimum price
+    public static int findBuyDay(int[] prices, int minPrice) {
+        for (int i = 0; i < prices.length; i++) {
+            if (prices[i] == minPrice) {
+                return i;
+            }
+        }
+        return -1; // Should never reach here if the input is valid
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Ask the user for the number of stock prices
+        System.out.print("Enter the number of days: ");
+        int n = scanner.nextInt();
+        
+        // Input the stock prices for each day
+        int[] prices = new int[n];
+        System.out.println("Enter the stock prices for each day: ");
+        for (int i = 0; i < n; i++) {
+            prices[i] = scanner.nextInt();
+        }
+        
+        // Call the function to find the best day to sell
+        findBestDayToSell(prices);
+        
+        scanner.close();
+    }
+}
+
+
+
+
+
+
+import java.util.Scanner;
+
+class BinarySearchTree {
+    // Node structure of the BST
+    static class Node {
+        int data;
+        Node left, right;
+
+        // Constructor to create a new node
+        Node(int item) {
+            data = item;
+            left = right = null;
+        }
+    }
+
+    // Root of the BST
+    Node root;
+
+    // Function to insert a new node with a given key
+    Node insert(Node root, int key) {
+        if (root == null) {
+            return new Node(key);
+        }
+        if (key < root.data) {
+            root.left = insert(root.left, key);
+        } else if (key > root.data) {
+            root.right = insert(root.right, key);
+        }
+        return root;
+    }
+
+    // Function to count the number of half nodes in the BST
+    int countHalfNodes(Node root) {
+        // Base case: if the node is null
+        if (root == null) {
+            return 0;
+        }
+
+        // If the node has exactly one child, it's a half node
+        if ((root.left == null && root.right != null) || (root.left != null && root.right == null)) {
+            return 1 + countHalfNodes(root.left) + countHalfNodes(root.right);
+        }
+
+        // Otherwise, continue recursively for both children
+        return countHalfNodes(root.left) + countHalfNodes(root.right);
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree tree = new BinarySearchTree();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter the number of nodes in the BST: ");
+        int n = scanner.nextInt();
+
+        // Insert nodes into the BST
+        System.out.println("Enter the values of the nodes:");
+        for (int i = 0; i < n; i++) {
+            int value = scanner.nextInt();
+            tree.root = tree.insert(tree.root, value);
+        }
+
+        // Calculate and print the number of half nodes
+        int halfNodeCount = tree.countHalfNodes(tree.root);
+        System.out.println("The number of half nodes in the BST is: " + halfNodeCount);
+
+        scanner.close();
+    }
+}
+
+
+
+
+
+
+
+import java.util.Scanner;
+
+class StockProfit {
+
+    // Function to calculate maximum profit by exploring all possible pairs of buy and sell prices
+    static int maxProfit(int[] prices) {
+        int n = prices.length;  // Get the number of days
+        int maxProfit = 0;  // Variable to store the maximum profit
+
+        // Loop through all pairs of days to find the maximum profit
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = i + 1; j < n; j++) {
+                // Calculate the profit for each pair and update maxProfit if the current profit is greater
+                maxProfit = Math.max(maxProfit, prices[j] - prices[i]);
+            }
+        }
+        return maxProfit;  // Return the maximum profit
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Taking dynamic input for the number of days (prices array size)
+        System.out.print("Enter the number of days: ");
+        int numOfDays = scanner.nextInt();
+
+        // Create an array to store the stock prices for each day
+        int[] prices = new int[numOfDays];
+
+        // Taking dynamic input for the stock prices
+        System.out.println("Enter the stock prices for each day:");
+        for (int i = 0; i < numOfDays; i++) {
+            prices[i] = scanner.nextInt();
+        }
+
+        // Calculate and display the maximum profit that can be made
+        int profit = maxProfit(prices);
+        System.out.println("The maximum profit you can make is: " + profit);
+
+        scanner.close();
+    }
+}
+
+
+
+
