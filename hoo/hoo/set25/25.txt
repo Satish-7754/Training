@@ -1,0 +1,137 @@
+25
+
+
+import java.util.*;
+
+public class RailwayPlatformManager {
+
+    // Train class to hold arrival and departure times
+    static class Train {
+        int arrival;
+        int departure;
+
+        Train(int arrival, int departure) {
+            this.arrival = arrival;
+            this.departure = departure;
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Take input for number of trains
+        System.out.print("Enter number of trains: ");
+        int n = scanner.nextInt();
+
+        List<Train> trains = new ArrayList<>();
+
+        // Take arrival and departure time for each train
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter arrival and departure time for Train " + (i + 1) + " (in 24hr format, e.g. 930 1015):");
+            int arrival = scanner.nextInt();
+            int departure = scanner.nextInt();
+            trains.add(new Train(arrival, departure));
+        }
+
+        // Sort arrival and departure times separately
+        int[] arrivals = new int[n];
+        int[] departures = new int[n];
+        for (int i = 0; i < n; i++) {
+            arrivals[i] = trains.get(i).arrival;
+            departures[i] = trains.get(i).departure;
+        }
+
+        Arrays.sort(arrivals);
+        Arrays.sort(departures);
+
+        // Two pointers for arrival and departure
+        int platformNeeded = 0, maxPlatforms = 0;
+        int i = 0, j = 0;
+
+        // Traverse arrival and departure arrays
+        while (i < n && j < n) {
+            if (arrivals[i] <= departures[j]) {
+                platformNeeded++; // Train arrived
+                i++;
+                if (platformNeeded > maxPlatforms) {
+                    maxPlatforms = platformNeeded;
+                }
+            } else {
+                platformNeeded--; // Train departed
+                j++;
+            }
+        }
+
+        System.out.println("\nMinimum number of platforms required: " + maxPlatforms);
+        scanner.close();
+    }
+}
+
+
+
+
+
+import java.util.*;
+
+public class GraphBFS {
+
+    // Function to perform BFS traversal
+    public static void bfs(int startNode, List<List<Integer>> adjList, int totalNodes) {
+        // Create a boolean array to track visited nodes
+        boolean[] visited = new boolean[totalNodes + 1];
+
+        // Queue for BFS
+        Queue<Integer> queue = new LinkedList<>();
+
+        // Mark the start node as visited and enqueue it
+        visited[startNode] = true;
+        queue.offer(startNode);
+
+        // Start the BFS loop
+        while (!queue.isEmpty()) {
+            int node = queue.poll();
+            System.out.print(node + " ");  // Visit the node
+
+            // Explore all the adjacent nodes of the current node
+            for (int neighbor : adjList.get(node)) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;  // Mark as visited
+                    queue.offer(neighbor);  // Enqueue the neighbor
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Input the number of nodes and edges
+        System.out.print("Enter the number of nodes: ");
+        int totalNodes = scanner.nextInt();
+        System.out.print("Enter the number of edges: ");
+        int totalEdges = scanner.nextInt();
+
+        // Initialize adjacency list for the graph
+        List<List<Integer>> adjList = new ArrayList<>();
+        for (int i = 0; i <= totalNodes; i++) {
+            adjList.add(new ArrayList<>());
+        }
+
+        // Input edges
+        System.out.println("Enter the edges (node1 node2): ");
+        for (int i = 0; i < totalEdges; i++) {
+            int node1 = scanner.nextInt();
+            int node2 = scanner.nextInt();
+            adjList.get(node1).add(node2);  // Add node2 to node1's adjacency list
+            adjList.get(node2).add(node1);  // Add node1 to node2's adjacency list (undirected graph)
+        }
+
+        // Input starting node for BFS
+        System.out.print("Enter the starting node for BFS: ");
+        int startNode = scanner.nextInt();
+
+        // Perform BFS traversal
+        System.out.println("BFS Traversal starting from node " + startNode + ":");
+        bfs(startNode, adjList, totalNodes);
+    }
+}

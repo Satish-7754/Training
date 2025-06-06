@@ -1,0 +1,82 @@
+34a) 
+import java.util.Scanner; 
+public class Program34a { 
+    public static int ternarySearch(int[] arr, int low, int high, int target) { 
+        if (low > high) return -1; 
+        int mid1 = low + (high - low) / 3; 
+        int mid2 = high - (high - low) / 3; 
+        if (arr[mid1] == target) return mid1; 
+        if (arr[mid2] == target) return mid2; 
+        if (target < arr[mid1]) { 
+            return ternarySearch(arr, low, mid1 - 1, target); 
+        } else if (target > arr[mid2]) { 
+            return ternarySearch(arr, mid2 + 1, high, target); 
+        } else { 
+            return ternarySearch(arr, mid1 + 1, mid2 - 1, target); 
+        } 
+    } 
+    public static void main(String[] args) { 
+        Scanner scanner = new Scanner(System.in); 
+        System.out.print("Enter number of elements: "); 
+        int n = scanner.nextInt(); 
+        int[] arr = new int[n]; 
+        System.out.println("Enter sorted array elements:"); 
+        for (int i = 0; i < n; i++) { 
+            arr[i] = scanner.nextInt(); 
+        } 
+        System.out.print("Enter target element: "); 
+        int target = scanner.nextInt(); 
+        int result = ternarySearch(arr, 0, n - 1, target); 
+        System.out.println(result != -1 ? "Element found at index: " + result : "Element not found"); 
+        scanner.close(); 
+    } 
+} 
+Output: 
+Enter number of elements: 6 
+Enter sorted array elements: 
+1 2 3 4 5 6 
+Enter target element: 4 
+Element found at index: 3 
+ 
+34b) 
+import java.util.*; 
+class ListNode { 
+    int val; 
+    ListNode next; 
+    ListNode(int val) { this.val = val; this.next = null; } 
+} 
+public class Program34b { 
+    public static boolean isPalindrome(ListNode head) { 
+        Stack<Integer> stack = new Stack<>(); 
+        ListNode temp = head; 
+        while (temp != null) { 
+            stack.push(temp.val); 
+            temp = temp.next; 
+        } 
+        temp = head; 
+        while (temp != null) { 
+            if (temp.val != stack.pop()) return false; 
+            temp = temp.next; 
+        } 
+        return true; 
+    } 
+    public static void main(String[] args) { 
+        Scanner scanner = new Scanner(System.in); 
+        System.out.print("Enter number of elements in linked list: "); 
+        int n = scanner.nextInt(); 
+        System.out.println("Enter linked list elements:"); 
+        ListNode head = null, tail = null; 
+        for (int i = 0; i < n; i++) { 
+            int value = scanner.nextInt(); 
+            ListNode newNode = new ListNode(value); 
+            if (head == null) { 
+                head = newNode; 
+            } else { 
+                tail.next = newNode; 
+            } 
+            tail = newNode; 
+        } 
+        System.out.println("Is the linked list a palindrome? " + isPalindrome(head)); 
+        scanner.close(); 
+    } 
+}

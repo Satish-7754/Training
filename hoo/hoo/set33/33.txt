@@ -1,0 +1,62 @@
+33a)
+import java.util.*;
+
+public class ArrayIntersection {
+
+    public static Set<Integer> findIntersection(int[] arr1, int[] arr2) {
+        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> result = new HashSet<>();
+
+        for (int num : arr1) {
+            set1.add(num);
+        }
+
+        for (int num : arr2) {
+            if (set1.contains(num)) {
+                result.add(num);
+            }
+        }
+
+        return result;
+    }
+
+    public static void main(String[] args) {
+        int[] arr1 = {7, 1, 5, 2, 3, 6};
+        int[] arr2 = {3, 8, 6, 20, 7};
+
+        Set<Integer> intersection = findIntersection(arr1, arr2);
+        System.out.println("Intersection: " + intersection);
+    }
+}
+
+
+
+
+33b)
+import java.util.*;
+
+public class PalindromeCheck {
+
+    public static boolean isPalindrome(String str) {
+        Stack<Character> stack = new Stack<>();
+        Queue<Character> queue = new LinkedList<>();
+
+        for (char c : str.toCharArray()) {
+            stack.push(c);
+            queue.offer(c);
+        }
+
+        while (!stack.isEmpty()) {
+            if (stack.pop() != queue.poll()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static void main(String[] args) {
+        String str = "madam";
+        System.out.println("Is palindrome: " + isPalindrome(str));
+    }
+}

@@ -1,0 +1,75 @@
+41a) 
+import java.util.*; 
+public class Program41a { 
+    public static int maxProfit(int[] prices) { 
+        if (prices.length == 0) return 0; 
+        int minPrice = Integer.MAX_VALUE, maxProfit = 0; 
+        for (int price : prices) { 
+            minPrice = Math.min(minPrice, price); 
+            maxProfit = Math.max(maxProfit, price - minPrice); 
+        } 
+        return maxProfit; 
+    } 
+    public static void main(String[] args) { 
+        Scanner scanner = new Scanner(System.in); 
+        System.out.print("Enter number of days: "); 
+        int n = scanner.nextInt(); 
+        int[] prices = new int[n]; 
+        System.out.println("Enter stock prices:"); 
+        for (int i = 0; i < n; i++) { 
+            prices[i] = scanner.nextInt(); 
+        } 
+        int result = maxProfit(prices); 
+        System.out.println("Maximum profit: " + result); 
+        scanner.close(); 
+    } 
+} 
+Output: 
+Enter number of days: 6 
+Enter stock prices: 
+7 1 5 3 6 4 
+Maximum profit: 5 
+ 
+41b) 
+import java.util.*; 
+class TreeNode { 
+    int val; 
+    TreeNode left, right; 
+    TreeNode(int val) { this.val = val; } 
+} 
+public class Program41b { 
+    public static int countHalfNodes(TreeNode root) { 
+        if (root == null) return 0; 
+        int count = 0; 
+        if ((root.left == null && root.right != null) || (root.left != null && root.right == null)) { 
+            count = 1; 
+        } 
+ 
+        return count + countHalfNodes(root.left) + countHalfNodes(root.right); 
+    } 
+    public static TreeNode insert(TreeNode root, int val) { 
+        if (root == null) return new TreeNode(val); 
+        if (val < root.val) root.left = insert(root.left, val); 
+        else root.right = insert(root.right, val); 
+        return root; 
+    } 
+    public static void main(String[] args) { 
+        Scanner scanner = new Scanner(System.in); 
+        TreeNode root = null; 
+        System.out.print("Enter number of nodes in BST: "); 
+        int n = scanner.nextInt(); 
+        System.out.println("Enter BST elements:"); 
+        for (int i = 0; i < n; i++) { 
+            int value = scanner.nextInt(); 
+            root = insert(root, value); 
+        } 
+        int result = countHalfNodes(root); 
+        System.out.println("Number of half nodes in BST: " + result); 
+        scanner.close(); 
+    } 
+} 
+Output: 
+Enter number of nodes in BST: 6 
+Enter BST elements: 
+5 3 8 2 4 9 
+Number of half nodes in BST: 1

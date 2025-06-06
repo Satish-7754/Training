@@ -1,0 +1,77 @@
+37a) 
+import java.util.*; 
+public class Program37a { 
+    public static int findLIS(int[] arr) { 
+        int n = arr.length; 
+        int[] dp = new int[n]; 
+        Arrays.fill(dp, 1);  
+ 
+        int maxLIS = 1; 
+        for (int i = 1; i < n; i++) { 
+            for (int j = 0; j < i; j++) { 
+                if (arr[i] > arr[j]) { 
+                    dp[i] = Math.max(dp[i], dp[j] + 1); 
+                } 
+            } 
+            maxLIS = Math.max(maxLIS, dp[i]); 
+        } 
+        return maxLIS; 
+    } 
+    public static void main(String[] args) { 
+        Scanner scanner = new Scanner(System.in); 
+        System.out.print("Enter number of elements: "); 
+        int n = scanner.nextInt(); 
+        int[] arr = new int[n]; 
+        System.out.println("Enter array elements:"); 
+        for (int i = 0; i < n; i++) { 
+            arr[i] = scanner.nextInt(); 
+        } 
+        int result = findLIS(arr); 
+        System.out.println("Length of Longest Increasing Subsequence: " + result); 
+        scanner.close(); 
+    } 
+} 
+ 
+37b) 
+import java.util.*; 
+class TrieNode { 
+    Map<Character, TrieNode> children = new HashMap<>(); 
+    boolean isEndOfWord; 
+} 
+public class Program37b { 
+    private TrieNode root; 
+    public Program37b() { 
+        root = new TrieNode(); 
+    } 
+    public void insert(String word) { 
+        TrieNode node = root; 
+        for (char ch : word.toCharArray()) { 
+            node.children.putIfAbsent(ch, new TrieNode()); 
+            node = node.children.get(ch); 
+        } 
+        node.isEndOfWord = true; 
+    } 
+    public String longestCommonPrefix() { 
+        TrieNode node = root; 
+        StringBuilder prefix = new StringBuilder(); 
+        while (node.children.size() == 1 && !node.isEndOfWord) { 
+            char ch = node.children.keySet().iterator().next(); 
+            prefix.append(ch); 
+            node = node.children.get(ch); 
+        } 
+        return prefix.toString(); 
+    } 
+    public static void main(String[] args) { 
+        Scanner scanner = new Scanner(System.in); 
+        Program37b trie = new Program37b(); 
+        System.out.print("Enter number of words: "); 
+        int n = scanner.nextInt(); 
+        scanner.nextLine();  
+        System.out.println("Enter words:"); 
+        for (int i = 0; i < n; i++) { 
+            trie.insert(scanner.nextLine()); 
+        } 
+        System.out.println("Longest Common Prefix: " + trie.longestCommonPrefix()); 
+        scanner.close(); 
+    } 
+} 

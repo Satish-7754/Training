@@ -1,0 +1,96 @@
+import java.util.Scanner;
+
+public class AlternateStringPrinter {
+    public static void printAlternately(String str1, String str2) {
+        int len1 = str1.length();
+        int len2 = str2.length();
+        int maxLen = Math.max(len1, len2);
+
+        for (int i = 0; i < maxLen; i++) {
+            if (i < len1) System.out.print(str1.charAt(i));
+            if (i < len2) System.out.print(str2.charAt(i));
+        }
+
+        System.out.println(); // Move to next line after printing
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Enter first string: ");
+        String str1 = scanner.nextLine();
+        
+        System.out.print("Enter second string: ");
+        String str2 = scanner.nextLine();
+
+        System.out.println("Alternating characters output:");
+        printAlternately(str1, str2);
+
+        scanner.close();
+    }
+}
+
+import java.util.Scanner;
+import java.util.Stack;
+
+public class ParenthesisBalancer {
+    public static void main(String[] args) {
+        // Create scanner object to read input
+        Scanner scanner = new Scanner(System.in);
+        
+        // Prompt user for input
+        System.out.println("Enter the string to check for balanced parentheses:");
+        String input = scanner.nextLine();
+        
+        // Call the function to check if parentheses are balanced
+        boolean result = isBalanced(input);
+        
+        // Output result
+        if(result) {
+            System.out.println("Parentheses are balanced.");
+        } else {
+            System.out.println("Parentheses are NOT balanced.");
+        }
+        
+        // Close the scanner
+        scanner.close();
+    }
+    
+    // Function to check if parentheses are balanced
+    public static boolean isBalanced(String str) {
+        // Stack to keep track of opening parentheses
+        Stack<Character> stack = new Stack<>();
+        
+        // Iterate through each character in the string
+        for (char ch : str.toCharArray()) {
+            // If character is an opening parenthesis, push to stack
+            if (ch == '(' || ch == '{' || ch == '[') {
+                stack.push(ch);
+            } 
+            // If character is a closing parenthesis
+            else if (ch == ')' || ch == '}' || ch == ']') {
+                // Check if stack is empty or top of stack does not match the corresponding opening parenthesis
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                char top = stack.pop();
+                if (!isMatchingPair(top, ch)) {
+                    return false;
+                }
+            }
+        }
+        
+        // If stack is empty, parentheses are balanced
+        return stack.isEmpty();
+    }
+    
+    // Helper function to check if a pair of parentheses match
+    public static boolean isMatchingPair(char open, char close) {
+        return (open == '(' && close == ')') ||
+               (open == '{' && close == '}') ||
+               (open == '[' && close == ']');
+    }
+}
+
+
+

@@ -1,0 +1,94 @@
+30
+import java.util.Scanner;
+
+public class RemoveDuplicatesSortedArray {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Ask user for the size of the array
+        System.out.print("Enter the number of elements in the sorted array: ");
+        int n = scanner.nextInt();
+
+        // Create an array and fill it with user input
+        int[] arr = new int[n];
+        System.out.println("Enter the elements (in sorted order):");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scanner.nextInt();
+        }
+
+        // Remove duplicates from the sorted array
+        int length = removeDuplicates(arr);
+
+        // Display the result
+        System.out.print("Array after removing duplicates: ");
+        for (int i = 0; i < length; i++) {
+            System.out.print(arr[i] + " ");
+        }
+
+        scanner.close();
+    }
+
+    // Function to remove duplicates from a sorted array
+    public static int removeDuplicates(int[] arr) {
+        if (arr.length == 0) return 0;
+
+        int uniqueIndex = 0;
+
+        // Go through the array and compare each element with the previous unique one
+        for (int i = 1; i < arr.length; i++) {
+            if (arr[i] != arr[uniqueIndex]) {
+                uniqueIndex++;
+                arr[uniqueIndex] = arr[i];
+            }
+        }
+
+        // Return the length of the array with unique elements
+        return uniqueIndex + 1;
+    }
+}
+
+
+
+
+
+
+import java.util.Scanner;
+import java.util.Stack;
+
+public class MinInStack {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Stack<Integer> stack = new Stack<>();
+
+        // Dynamic input: ask the user how many elements they want to push
+        System.out.print("How many elements do you want to push onto the stack? ");
+        int n = scanner.nextInt();
+
+        // Get n elements from the user
+        for (int i = 0; i < n; i++) {
+            System.out.print("Enter element #" + (i + 1) + ": ");
+            int num = scanner.nextInt();
+            stack.push(num);
+        }
+
+        // Check if the stack is empty
+        if (stack.isEmpty()) {
+            System.out.println("The stack is empty. No minimum element.");
+        } else {
+            // Initialize min with the first element in the stack
+            int min = stack.peek();
+
+            // Go through all elements to find the minimum
+            for (int val : stack) {
+                if (val < min) {
+                    min = val;
+                }
+            }
+
+            System.out.println("The minimum element in the stack is: " + min);
+        }
+
+        scanner.close();
+    }
+}

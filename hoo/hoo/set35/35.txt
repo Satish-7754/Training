@@ -1,0 +1,173 @@
+35
+
+import java.util.*;
+
+public class SortedSquaredArray {
+
+    public static void main(String[] args) {
+        // Create a scanner object for taking user input
+        Scanner scanner = new Scanner(System.in);
+
+        // Input the length of the array
+        System.out.print("Enter the number of elements in the array: ");
+        int n = scanner.nextInt();
+
+        // Initialize the array
+        int[] arr = new int[n];
+
+        // Input the sorted array elements
+        System.out.println("Enter the sorted array elements:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scanner.nextInt();
+        }
+
+        // Call the function to get the sorted array of squared values
+        int[] squaredArr = sortSquaredArray(arr);
+
+        // Output the result
+        System.out.println("Array after squaring and sorting:");
+        for (int num : squaredArr) {
+            System.out.print(num + " ");
+        }
+    }
+
+    // Function to square and sort the elements of the array
+    public static int[] sortSquaredArray(int[] arr) {
+        int n = arr.length;
+        int[] squaredArr = new int[n];
+        
+        // Square each element in the array
+        for (int i = 0; i < n; i++) {
+            squaredArr[i] = arr[i] * arr[i];
+        }
+
+        // Sort the squared array
+        Arrays.sort(squaredArr);
+
+        return squaredArr;
+    }
+}
+
+
+
+
+
+
+
+import java.util.Scanner;
+
+// Node class for the Linked List
+class Node {
+    int data;
+    Node next;
+
+    // Constructor to create a new node
+    public Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+// LinkedList class to handle operations
+class LinkedList {
+    Node head;
+
+    // Method to add a new node at the end of the list
+    public void append(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+        } else {
+            Node temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
+            }
+            temp.next = newNode;
+        }
+    }
+
+    // Method to remove the nth node from the linked list
+    public void removeNthFromEnd(int n) {
+        if (head == null) return;
+
+        // Find the length of the list
+        int length = 0;
+        Node temp = head;
+        while (temp != null) {
+            length++;
+            temp = temp.next;
+        }
+
+        // If n is larger than the list length, return without modification
+        if (n > length) {
+            System.out.println("Invalid position!");
+            return;
+        }
+
+        // If n is equal to length, remove the head
+        if (n == length) {
+            head = head.next;
+            return;
+        }
+
+        // Find the node just before the nth node from the end
+        temp = head;
+        for (int i = 1; i < length - n; i++) {
+            temp = temp.next;
+        }
+
+        // Remove the nth node from the end
+        temp.next = temp.next.next;
+    }
+
+    // Method to display the linked list
+    public void display() {
+        if (head == null) {
+            System.out.println("The list is empty.");
+            return;
+        }
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + " -> ");
+            temp = temp.next;
+        }
+        System.out.println("null");
+    }
+}
+
+public class RemoveNthElement {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        LinkedList list = new LinkedList();
+
+        // Input number of elements in the list
+        System.out.print("Enter the number of elements in the linked list: ");
+        int numElements = scanner.nextInt();
+
+        // Input elements
+        System.out.println("Enter the elements:");
+        for (int i = 0; i < numElements; i++) {
+            int data = scanner.nextInt();
+            list.append(data);
+        }
+
+        // Display the current linked list
+        System.out.print("Original linked list: ");
+        list.display();
+
+        // Input position of the element to remove
+        System.out.print("Enter the position (n) of the element to remove from the end: ");
+        int n = scanner.nextInt();
+
+        // Remove nth element from the end
+        list.removeNthFromEnd(n);
+
+        // Display the updated linked list
+        System.out.print("Updated linked list: ");
+        list.display();
+
+        scanner.close();
+    }
+}
+
+

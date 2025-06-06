@@ -1,0 +1,127 @@
+24
+
+
+
+import java.util.*;
+
+public class BFSAdjMatrix {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Step 1: Input the number of vertices
+        System.out.print("Enter the number of vertices: ");
+        int vertices = scanner.nextInt();
+
+        // Step 2: Create the adjacency matrix
+        int[][] adjMatrix = new int[vertices][vertices];
+
+        // Step 3: Input the number of edges
+        System.out.print("Enter the number of edges: ");
+        int edges = scanner.nextInt();
+
+        // Step 4: Fill the adjacency matrix based on the edges
+        System.out.println("Enter edges (format: from to):");
+        for (int i = 0; i < edges; i++) {
+            int from = scanner.nextInt();
+            int to = scanner.nextInt();
+            adjMatrix[from][to] = 1;
+            adjMatrix[to][from] = 1; // If the graph is undirected
+        }
+
+        // Step 5: Input the starting node for BFS
+        System.out.print("Enter the starting vertex for BFS: ");
+        int start = scanner.nextInt();
+
+        // Step 6: Call BFS
+        bfs(adjMatrix, vertices, start);
+    }
+
+    public static void bfs(int[][] adjMatrix, int vertices, int start) {
+        boolean[] visited = new boolean[vertices];
+        Queue<Integer> queue = new LinkedList<>();
+
+        // Start from the given node
+        visited[start] = true;
+        queue.offer(start);
+
+        System.out.println("BFS traversal starting from vertex " + start + ":");
+
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            System.out.print(current + " ");
+
+            // Explore all adjacent vertices
+            for (int i = 0; i < vertices; i++) {
+                if (adjMatrix[current][i] == 1 && !visited[i]) {
+                    queue.offer(i);
+                    visited[i] = true;
+                }
+            }
+        }
+        System.out.println(); // Move to next line after traversal
+    }
+}
+
+
+
+import java.util.*;
+
+public class ZeroSumTriplets {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Step 1: Take dynamic input from user
+        System.out.print("Enter the number of elements in the array: ");
+        int n = scanner.nextInt();
+
+        int[] nums = new int[n];
+        System.out.println("Enter the elements of the array:");
+        for (int i = 0; i < n; i++) {
+            nums[i] = scanner.nextInt();
+        }
+
+        // Step 2: Find and print all unique triplets with sum = 0
+        List<List<Integer>> result = findTriplets(nums);
+        System.out.println("Triplets with sum zero are:");
+        for (List<Integer> triplet : result) {
+            System.out.println(triplet);
+        }
+
+        scanner.close();
+    }
+
+    public static List<List<Integer>> findTriplets(int[] nums) {
+        List<List<Integer>> triplets = new ArrayList<>();
+        Arrays.sort(nums);  // Sort the array first
+
+        for (int i = 0; i < nums.length - 2; i++) {
+            // Skip duplicates for the first element
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+            int left = i + 1;
+            int right = nums.length - 1;
+
+            while (left < right) {
+                int total = nums[i] + nums[left] + nums[right];
+
+                if (total == 0) {
+                    triplets.add(Arrays.asList(nums[i], nums[left], nums[right]));
+
+                    // Skip duplicates for left and right
+                    while (left < right && nums[left] == nums[left + 1]) left++;
+                    while (left < right && nums[right] == nums[right - 1]) right--;
+
+                    left++;
+                    right--;
+                } else if (total < 0) {
+                    left++;  // Need a larger sum
+                } else {
+                    right--; // Need a smaller sum
+                }
+            }
+        }
+
+        return triplets;
+    }
+}

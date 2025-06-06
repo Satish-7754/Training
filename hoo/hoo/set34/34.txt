@@ -1,0 +1,167 @@
+34
+import java.util.Scanner;
+
+public class LongestIncreasingSubsequence {
+    public static void main(String[] args) {
+        // Scanner for user input
+        Scanner scanner = new Scanner(System.in);
+        
+        // Read the array length
+        System.out.println("Enter the length of the array:");
+        int n = scanner.nextInt();
+        
+        // Read the array elements
+        int[] arr = new int[n];
+        System.out.println("Enter the elements of the array:");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scanner.nextInt();
+        }
+        
+        // Find the longest increasing subsequence length and count
+        Result result = findLIS(arr);
+        
+        // Output the result
+        System.out.println("Length of Longest Increasing Subsequence: " + result.length);
+        System.out.println("Number of Longest Increasing Subsequences: " + result.count);
+    }
+
+    public static Result findLIS(int[] arr) {
+        int n = arr.length;
+        int[] dp = new int[n];  // dp[i] will store the length of LIS ending at index i
+        int[] count = new int[n];  // count[i] will store the number of LIS ending at index i
+
+        // Initialize dp and count arrays
+        for (int i = 0; i < n; i++) {
+            dp[i] = 1;  // Minimum LIS ending at any index is 1 (the element itself)
+            count[i] = 1;  // Initially, there is only one subsequence of length 1 (the element itself)
+        }
+
+        int maxLength = 1;  // The length of the longest increasing subsequence
+        int totalCount = 0;  // To keep track of how many longest subsequences we have
+
+        // Fill dp and count arrays
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                if (arr[i] > arr[j]) {  // If arr[i] can extend arr[j]
+                    if (dp[i] < dp[j] + 1) {
+                        dp[i] = dp[j] + 1;  // Update dp[i]
+                        count[i] = count[j];  // Reset count[i] to count[j] as it starts a new subsequence
+                    } else if (dp[i] == dp[j] + 1) {
+                        count[i] += count[j];  // Add the count of subsequences of length dp[j] that can extend to i
+                    }
+                }
+            }
+            if (dp[i] > maxLength) {
+                maxLength = dp[i];  // Update maxLength
+                totalCount = count[i];  // Reset totalCount to the new count at index i
+            } else if (dp[i] == maxLength) {
+                totalCount += count[i];  // Add the count of LIS of max length
+            }
+        }
+
+        return new Result(maxLength, totalCount);  // Return the result
+    }
+
+    // Result class to store LIS length and count
+    static class Result {
+        int length;
+        int count;
+
+        Result(int length, int count) {
+            this.length = length;
+            this.count = count;
+        }
+    }
+}
+
+
+
+
+
+
+import java.util.Scanner;
+
+public class LongestPrefix {
+
+    // TrieNode class representing a node of the Trie
+    static class TrieNode {
+        TrieNode[] children = new TrieNode[26]; // Array for 26 letters of the alphabet
+        boolean isEndOfWord = false; // Flag to mark the end of a word
+    }
+
+    // Trie class with insert and longestPrefix methods
+    static class Trie {
+        private TrieNode root;
+
+        public Trie() {
+            root = new TrieNode();
+        }
+
+        // Method to insert a word into the Trie
+        public void insert(String word) {
+            TrieNode currentNode = root;
+            for (char c : word.toCharArray()) {
+                int index = c - 'a'; // Convert character to index (0 to 25)
+                if (currentNode.children[index] == null) {
+                    currentNode.children[index] = new TrieNode();
+                }
+                currentNode = currentNode.children[index];
+            }
+            currentNode.isEndOfWord = true;
+        }
+
+        // Method to find the longest common prefix
+        public String findLongestPrefix() {
+            StringBuilder prefix = new StringBuilder();
+            TrieNode currentNode = root;
+            while (countChildren(currentNode) == 1 && !currentNode.isEndOfWord) {
+                for (int i = 0; i < 26; i++) {
+                    if (currentNode.children[i] != null) {
+                        prefix.append((char) (i + 'a'));
+                        currentNode = currentNode.children[i];
+                        break;
+                    }
+                }
+            }
+            return prefix.toString();
+        }
+
+        // Helper method to count children nodes
+        private int countChildren(TrieNode node) {
+            int count = 0;
+            for (TrieNode child : node.children) {
+                if (child != null) count++;
+            }
+            return count;
+        }
+    }
+
+    // Main method to take dynamic input and find the longest prefix
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Taking the number of strings from the user
+        System.out.print("Enter the number of strings: ");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // Consume the newline character after the number
+
+        // Taking the string array input from the user
+        String[] strings = new String[n];
+        System.out.println("Enter the strings:");
+        for (int i = 0; i < n; i++) {
+            strings[i] = scanner.nextLine();
+        }
+
+        // Initialize the Trie and insert all strings
+        Trie trie = new Trie();
+        for (String str : strings) {
+            trie.insert(str);
+        }
+
+        // Find the longest common prefix
+        String longestPrefix = trie.findLongestPrefix();
+        System.out.println("Longest common prefix: " + longestPrefix);
+
+        scanner.close();
+    }
+}

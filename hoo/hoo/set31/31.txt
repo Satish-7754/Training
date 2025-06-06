@@ -1,0 +1,214 @@
+31
+
+// Java program to find the missing number
+// in a given arithmetic progression
+class GFG {
+    static int findMissing(int[] arr) {
+        int n = arr.length;
+        int a = arr[0];
+        int l = arr[n - 1];
+        int s, sum = 0;
+
+        // Calculate the sum of all elements including the missing element
+        if ((a + l) % 2 == 0) {
+            s = (a + l) / 2;
+            s = s * (n + 1);
+        } else {
+            s = (n + 1) / 2;
+            s = (a + l) * s;
+        }
+
+        // Calculate the sum of all elements in the array
+        for (int num : arr) {
+            sum += num;
+        }
+
+        // The missing number is the difference between the two sums
+        return s - sum;
+    }
+
+    public static void main(String[] args) {
+         Scanner scanner = new Scanner(System.in);
+
+        // Ask user to input the number of elements
+        System.out.print("Enter the number of elements in the array: ");
+        int n = scanner.nextInt();
+
+        // Create an array to store the elements
+        int[] arr = new int[n];
+
+        // Ask the user to input the elements of the array
+        System.out.println("Enter the elements of the array: ");
+        for (int i = 0; i < n; i++) {
+            arr[i] = scanner.nextInt();
+        }
+
+        // Call the function to find the missing number and print the result
+        System.out.println("The missing number in the arithmetic progression is: " + findMissing(arr));
+
+        // Close the scanner to avoid resource leaks
+        scanner.close();}
+}
+
+
+import java.util.Scanner;
+
+public class LogarithmicSequenceFinder {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Step 1: Input details
+        System.out.print("Enter the total number of terms in the sequence: ");
+        int n = scanner.nextInt();
+
+        double[] sequence = new double[n];
+        int missingIndex = -1;
+
+        System.out.println("Enter the terms (use -1 for the missing term):");
+        for (int i = 0; i < n; i++) {
+            System.out.print("Term " + (i + 1) + ": ");
+            sequence[i] = scanner.nextDouble();
+            if (sequence[i] == -1) {
+                missingIndex = i;
+            }
+        }
+
+        System.out.print("Enter the base of the logarithm (e.g., 10, 2, e=2.718...): ");
+        double base = scanner.nextDouble();
+
+        // Step 2: Try to find the common difference in log values
+        Double diff = null;
+
+        for (int i = 1; i < n; i++) {
+            if (sequence[i] != -1 && sequence[i - 1] != -1) {
+                diff = sequence[i] - sequence[i - 1];
+                break;
+            }
+        }
+
+        if (diff == null || missingIndex == -1) {
+            System.out.println("Insufficient data to calculate the missing term.");
+        } else {
+            // Step 3: Fill in the missing value using arithmetic progression
+            double missingValue = 0;
+
+            if (missingIndex > 0 && sequence[missingIndex - 1] != -1) {
+                missingValue = sequence[missingIndex - 1] + diff;
+            } else if (missingIndex < n - 1 && sequence[missingIndex + 1] != -1) {
+                missingValue = sequence[missingIndex + 1] - diff;
+            }
+
+            sequence[missingIndex] = missingValue;
+
+            // Step 4: Output result
+            System.out.println("\nCompleted Sequence:");
+            for (double val : sequence) {
+                System.out.print(val + "  ");
+            }
+
+            double result = Math.pow(base, missingValue);
+            System.out.println("\n\nMissing term (antilog): " + result);
+        }
+
+        scanner.close();
+    }
+}
+
+
+
+
+
+
+import java.util.Scanner;
+import java.util.Stack;
+
+public class MinStack {
+    Stack<Long> stack = new Stack<>();
+    long min;
+
+    // Push operation with encoding for new minimum
+    public void push(long x) {
+        if (stack.isEmpty()) {
+            stack.push(x);
+            min = x;
+        } else if (x < min) {
+            // Encode the new min value
+            stack.push(2 * x - min);
+            min = x;
+        } else {
+            stack.push(x);
+        }
+    }
+
+    // Pop operation with decoding if needed
+    public void pop() {
+        if (stack.isEmpty()) {
+            System.out.println("Stack is empty");
+            return;
+        }
+
+        long top = stack.pop();
+        if (top < min) {
+            // Retrieve the previous min
+            min = 2 * min - top;
+        }
+    }
+
+    // Get the top element
+    public long top() {
+        if (stack.isEmpty()) {
+            throw new RuntimeException("Stack is empty");
+        }
+
+        long top = stack.peek();
+        if (top < min) {
+            return min;
+        } else {
+            return top;
+        }
+    }
+
+    // Get the current minimum element
+    public long getMin() {
+        if (stack.isEmpty()) {
+            throw new RuntimeException("Stack is empty");
+        }
+        return min;
+    }
+
+    public static void main(String[] args) {
+        MinStack s = new MinStack();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter operations: push <num>, pop, top, min, exit");
+
+        while (true) {
+            String[] input = sc.nextLine().split(" ");
+            String command = input[0];
+
+            switch (command) {
+                case "push":
+                    long val = Long.parseLong(input[1]);
+                    s.push(val);
+                    System.out.println("Pushed " + val);
+                    break;
+                case "pop":
+                    s.pop();
+                    System.out.println("Popped");
+                    break;
+                case "top":
+                    System.out.println("Top: " + s.top());
+                    break;
+                case "min":
+                    System.out.println("Min: " + s.getMin());
+                    break;
+                case "exit":
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Unknown command");
+            }
+        }
+    }
+}
+
+
